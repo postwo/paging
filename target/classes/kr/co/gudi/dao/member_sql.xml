@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<!-- I.O.C : DB 접속, 쿼리 실행, 자원반납, resultSet 생성 등이 자동으로 된다. -->
+<!-- D.I : 작업에 필요한 내용을 xml 에 등록(빈등록) 해 놓으면 필요한 곳에서 사용 한다. -->
+<!-- 변경사항이 생기면 xml 의 내용만 바꿔주면 된다. -->
+
+<!-- mapper : 쿼리문을 저장하고 있는 xml -->
+<!-- namespace : 어떤 인터페이스와 연결 되는가?-->
+<mapper namespace="kr.co.gudi.dao.MemberDAO">
+
+	<!-- join : insert -->
+	<!-- id=연결할 추상 메서드 -->
+	<!-- 파라메터가 하나로 뭉쳐서 왔을 경우... -->
+	<!-- parameterType 을 쓸 경우는 이름을 사용한다. -->
+	<insert id="join" parameterType="hashmap">
+		INSERT INTO member (id,pw,name,age,gender,email)
+			VALUES(#{id},#{pw},#{name},#{age},#{gender},#{email})
+	</insert>
+
+	<!-- login : select -->
+	<!-- select 는 resultType 으로 반환할 타입을 지정해 줘야 한다. -->
+	<select id="login" resultType="String">
+		SELECT id FROM member 
+			WHERE id =#{param1} AND pw = #{param2}
+	</select>
+	
+	<!-- list : select -->
+	<!-- resultType 이 사용자가 만든 class 일 경우 풀 경로를 다 명시해야 한다. -->
+	<select id="list" resultType="kr.co.gudi.dto.MemberDTO">
+		SELECT id,name,gender FROM member
+	</select>
+	
+	<!-- delete : delete -->
+	<delete id="del">
+		DELETE FROM member WHERE id=#{param1}
+	</delete>
+	
+	<!-- detail : select -->
+	<select id="detail" resultType="kr.co.gudi.dto.MemberDTO">
+		SELECT * FROM member WHERE id=#{param1}
+	</select>
+	
+</mapper>
